@@ -3,7 +3,7 @@ const httpProxy = require("http-proxy");
 const cheerio = require("cheerio");
 const zlib = require("zlib");
 const hosts = require("./hosts.json");
-const proxyPort = 3010;
+const proxyPort = process.env.PORT || 3000;
 
 const proxyProcessor = (proxyRes, req, res) => {
   const buffer = [];
