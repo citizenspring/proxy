@@ -15,7 +15,10 @@ const proxyProcessor = (proxyRes, req, res) => {
     const encoding = proxyRes.headers["content-encoding"];
     const compressedBuffer = Buffer.concat(buffer);
     delete proxyRes.headers["content-length"]; // Remove Content-Length header
-    const canonicalUrl = `https://${req.headers.host}${req.url}`;
+    const canonicalUrl = `https://${req.headers.host}${req.url.replace(
+      /\?.*$/,
+      ""
+    )}`;
     if (encoding === "br") {
       zlib.brotliDecompress(compressedBuffer, (err, decompressedBuffer) => {
         if (err) {
@@ -86,7 +89,7 @@ http
     }
     req.headers["accept-encoding"] = encoding;
 
-    const hostname = req.headers.host;
+    const hostname = req.headers.host.replace(/:[0-9]+$/, "");
     console.log(">>>", hostname, req.url, `(${encoding})`);
 
     if (!hosts[hostname]) {
