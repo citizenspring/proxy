@@ -104,6 +104,7 @@ function processBody(body, hostToReplace) {
   if (!body) return "";
   const $ = cheerio.load(body);
   $('link[rel="canonical"]').attr("href", hostToReplace);
+  $('meta[property="og:url"]').attr("content", hostToReplace);
   // Remove the Framer badge container
   $("#__framer-badge-container").remove();
   body = $.html();
